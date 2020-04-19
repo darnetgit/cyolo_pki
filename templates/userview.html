@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}
+Welcome
+{% endblock %}
+
+{% block body %}
+    <div class="text-center">
+        <h4 class="text-info">My info</h4>
+        <a class="btn btn-info btn-sm" href="/v1/{{tenant}}/users/me">Show me</a>
+    </div>
+
+    <h4 class="text-center text-info">My messages</h4>
+    <div id="messages" class="text-center">
+        {% if messages %}
+            {% for message in messages %}
+                {{message.time}}  from {{message.sender}}
+                <form action="v1/{{tenant}}/users/me/decrypt" method="post">
+                    <button name="decrypt" id="decrypt" value="{{message.encText}}">decrypt</button>
+                </form>
+            {% endfor %}
+        {% else %}
+           <div class="text-center"> no messages </div>
+        {% endif %}
+    </div>
+
+
+<h4 class="text-center text-info"> All members in tenant {{tenant}}:</h4>
+    {% if users %}
+    <table class="table .table-borderless">
+      <thead>
+        <tr>
+          <th scope="col">User name</th>
+          <th scope="col">Certificate</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for user in users %}
+      <tr>
+          <td>{{user.username}}</td>
+          <td><textarea readonly>{{user.certificate}}</textarea></td>
+          <td>
+            <form id="review-form" class="form" action="/v1/{{tenant}}/users/{{user.userid}}/encrypt" method="post">
+                    <div class="form-group">
+                        <input type="text" name="message" id="message" class="form-control" placeholder="your message" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" name="send" class="btn btn-info btn-sm" value="Send!">
+                    </div>
+              </form>
+          </td>
+      </tr>
+    {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+       <div class="text-center"> no members</div>
+    {% endif %}
+
+
+{% endblock %}

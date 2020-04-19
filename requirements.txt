@@ -1,0 +1,10 @@
+cryptography
+requests
+werkzeug
+Flask
+Flask-SocketIO
+Flask-Httpauth
+gunicorn
+pyOpenSSL
+rsa
+pycryptodomex
